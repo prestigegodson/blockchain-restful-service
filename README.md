@@ -62,3 +62,13 @@ for (var i = 0; i < inducedErrorBlocks.length; i++) {
 ```
 blockchain.validateChain();
 ```
+### Testing the Webservice
+
+- To get a block from the service, make a GET request to localhost:3000/block/{blockHeight} passing the block height as a path variable parameter
+
+- To create a new block, make a POST request to localhost:3000/block . The Block data should be in the request body e.g:
+```
+{
+    body: "Block data goes here"
+}
+```
