@@ -27,6 +27,7 @@ npm install level --save
 - Install expressjs web framework
 ```
 npm install express --save
+```
 
 ## Testing
 
@@ -62,6 +63,7 @@ for (var i = 0; i < inducedErrorBlocks.length; i++) {
 ```
 blockchain.validateChain();
 ```
+
 ### Testing the Webservice
 
 - To get a block from the service, make a GET request to localhost:3000/block/{blockHeight} passing the block height as a path variable parameter
