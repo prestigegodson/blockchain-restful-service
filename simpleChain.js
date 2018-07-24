@@ -28,12 +28,12 @@ class Blockchain{
 
   constructor(){
 
-    let self = this;
+    const self = this;
     levelSandbox.getLevelDBData(0,function(err, value){
       if(err){
         if(err.notFound){
           console.log("No key found");
-          self.addBlock(new Block("First block in the chain - Genesis block"));
+          self.addBlock(new Block("First block in the chain - Genesis block"), function(err, data){});
         }else{
           console.log(err);
         }
@@ -84,7 +84,7 @@ class Blockchain{
       // return object as a single string
       levelSandbox.getLevelDBData(blockHeight, function(err, value){
         if(err){
-          callback(err);
+          callback(err, null);
         }else{
           console.log("#Block " + blockHeight + " : " + value)
           callback(err, JSON.parse(JSON.parse(JSON.stringify(value))));
