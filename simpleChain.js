@@ -118,12 +118,12 @@ class Blockchain{
    // Validate blockchain
     async validateChain(){
         let self = this;
-        levelSandbox.getAllData(function(err, chain){
+        levelSandbox.getAllData( async function(err, chain){
 
           let errorLog = [];
           for (var i = 0; i < chain.length; i++) {
             // validate block
-            let isBlockValid = self.validateBlock(chain[i].height);
+            let isBlockValid = await self.validateBlock(chain[i].height);
             if (!isBlockValid)errorLog.push(i);
 
             if(i == 0 ){
