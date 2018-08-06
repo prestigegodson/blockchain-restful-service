@@ -8,15 +8,25 @@ app.use(bodyParser.json());
 app.get("/block/:block", function(req, res){
 
     var blockHeight = req.params.block;
-    var blockchain = new simpleChain.Blockchain();
-    blockchain.getBlock(blockHeight, function(err, result){
-        if(err){
-            res.json(400,{"error": err});
+    var blockchain = new simpleChain.Blockchain(function(error, initData){
+        if(error){
+            res.json(400,{"error": "Generic error"});
         }else{
-            res.json(200,result);
+            blockchain.getBlock(blockHeight, function(err, result){ 
+                if(err){
+                    res.json(400,{"error": err});
+                }else{
+
+                    if(!result.body){
+                        result.body = null;
+                    }
+                    res.json(200,result);
+                }
+            
+            });
         }
-        
     });
+    
     
 });
 
@@ -24,17 +34,25 @@ app.post("/block", function(req, res){
 
     var body = req.body.body;
     var block = new simpleChain.Block(body);
-    var blockchain = new simpleChain.Blockchain();
-    blockchain.addBlock(block, function(err, newBlock){
-        if(err){
-            res.err(400,err);
+    var blockchain = new simpleChain.Blockchain(function(error, initData){
+        if(error){
+            res.json(400,{"error": "Generic error"});
         }else{
-            res.json(200,newBlock);
+        blockchain.addBlock(block, function(err, newBlock){
+            if(err){
+                res.err(400,err);
+            }else{
+                if(!newBlock.body){
+                        newBlock.body = null;
+                    }
+                res.json(200,newBlock);
+            }
+            
+        });
         }
-        
     });
     
 });
 
-app.listen(3000);
-console.log("Server listening on localhost:3000");
+app.listen(8000);
+console.log("Server listening on localhost:8000");

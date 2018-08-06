@@ -7,7 +7,7 @@ const levelSandbox = require('./levelSandbox.js');
 const chainKey = "chain";
 
 /* ===== Block Class ==============================
-|  Class with a constructor for block 			   |
+|  Class with a constructor for block 			       |
 |  ===============================================*/
 
 class Block{
@@ -26,17 +26,22 @@ class Block{
 
 class Blockchain{
 
-  constructor(){
+  constructor(callback){
 
     const self = this;
     levelSandbox.getLevelDBData(0,function(err, value){
       if(err){
         if(err.notFound){
           console.log("No key found");
-          self.addBlock(new Block("First block in the chain - Genesis block"), function(err, data){});
+          self.addBlock(new Block("First block in the chain - Genesis block"), function(err, data){
+            callback(null, data);
+          });
         }else{
           console.log(err);
+          callback(err);
         }
+      }else{
+        callback(err);
       }
     });
     
@@ -84,8 +89,13 @@ class Blockchain{
       // return object as a single string
       levelSandbox.getLevelDBData(blockHeight, function(err, value){
         if(err){
-          callback(err, null);
-        }else{
+          if(err.notFound){
+            callback("Block not found", null);
+          }else{
+            callback(err,null);
+          }
+        }
+        else{
           console.log("#Block " + blockHeight + " : " + value)
           callback(err, JSON.parse(JSON.parse(JSON.stringify(value))));
         }
